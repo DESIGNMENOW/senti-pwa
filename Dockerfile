@@ -23,4 +23,4 @@ COPY --from=builder /app/dist ./dist
 
 EXPOSE 3000
 
-CMD ["npx", "srvx", "--prod", "-s", "dist/client", "dist/server/server.js"]
+CMD ["npx", "srvx", "--prod", "-s", "../client", "dist/server/server.js"]
