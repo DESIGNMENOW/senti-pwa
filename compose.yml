@@ -1,0 +1,19 @@
+services:
+  senti-pwa:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: senti-pwa
+    restart: unless-stopped
+    networks:
+      - traefik
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.senti-pwa.rule=Host(`senti.hochform.media`)"
+      - "traefik.http.routers.senti-pwa.entrypoints=websecure"
+      - "traefik.http.routers.senti-pwa.tls=true"
+      - "traefik.http.services.senti-pwa.loadbalancer.server.port=3000"
+
+networks:
+  traefik:
+    external: true
