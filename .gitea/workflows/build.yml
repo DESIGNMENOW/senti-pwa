@@ -1,0 +1,39 @@
+name: Build and Push Senti
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build application
+        run: npm run build
+
+      - name: Login to Gitea Container Registry
+        run: |
+          echo "${{ secrets.350e5fcdb7be1d34f0487bb9aee2d8fb8b8bd885 }}" | \
+            docker login git.hochform.media \
+            --username "${{ secrets.tf }}" \
+            --password-stdin
+
+      - name: Build Docker image
+        run: |
+          docker build \
+            -t git.hochform.media/tf/senti-pwa:latest \
+            -t git.hochform.media/tf/senti-pwa:${{ gitea.sha }} \
+            .
+
+      - name: Push Docker images
+        run: |
+          docker push git.hochform.media/tf/senti-pwa:latest
+          docker push git.hochform.media/tf/senti-pwa:${{ gitea.sha }}
