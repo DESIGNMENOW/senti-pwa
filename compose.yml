@@ -11,6 +11,7 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.senti-pwa.rule=Host(`senti.cloud.hochform.net`)"
       - "traefik.http.routers.senti-pwa.entrypoints=websecure"
+      - "traefik.http.routers.senti-pwa.tls.certresolver=letsencryptresolver"
       - "traefik.http.routers.senti-pwa.tls=true"
       - "traefik.http.services.senti-pwa.loadbalancer.server.port=3000"
 
